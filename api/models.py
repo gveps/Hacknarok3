@@ -1,12 +1,15 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 
 class Task(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField()
     total_times = models.IntegerField()
-    startDate = models.DateField()
+    startDate = models.DateField(default=timezone.now)
     endDate = models.DateField()
     type = models.IntegerField(None)
     status = models.BooleanField(None)

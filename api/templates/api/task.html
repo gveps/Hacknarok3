@@ -9,7 +9,14 @@
         <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
         <small>Donec id elit non mi porta.</small>
     </a>
+
+    {% for task in tasks %}
+        <p>{{ task.name }}</p>
+    {% endfor %}
+    <p>dasdasdasda</p>
 </div>
+
+
 
     <div>
         <button><a href="{% url 'api_new_task' %}">New task</a></button>

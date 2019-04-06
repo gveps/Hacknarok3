@@ -2,6 +2,9 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id
+
+
 def easy(request):
 
     return render(request, 'api/base.html', {'cos': 'dupa'})
@@ -18,7 +21,13 @@ def upload(request):
 
 
 def task(request):
-    return render(request, 'api/task.html')
+    user_id = 1
+    list_task = get_all_tasks_by_id(user_id)
+
+    for ele in list_task:
+
+        print(ele.name)
+    return render(request, 'api/task.html', {'tasks': list_task})
 
 
 def daily(request):
@@ -39,9 +48,17 @@ def home(request):
 
 def new_task(request):
     if request.method == 'POST':
-        print(request.POST.get('task_name'))
-        print(request.POST.get('task_description'))
-        print(request.POST.get('task_deadline'))
+        user_id = 1
+
+        task_name = request.POST.get('task_name')
+        task_description = request.POST.get('task_description')
+        task_deadline = request.POST.get('task_deadline')
+        print(task_name)
+        print(task_description)
+        print(task_deadline)
+
+
+        addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
         return render(request, 'api/task.html')
     return render(request, 'api/new_task.html')
 

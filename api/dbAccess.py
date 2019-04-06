@@ -24,8 +24,10 @@ def saveTagTask(tag, task):
     tag_task.save()
 
 
-def addTask(name, description, total_times, startDate, endDate, type, status, tags):
+def addTask(user_id, name, description, total_times, startDate, endDate, type, status, tags):
     task = saveTask(name=name, description=description, total_times=total_times, startDate=startDate, endDate=endDate, type=type, status=status)
+    taskUser = TaskUser(id_user_id=user_id, id_task=task, counter=0, last_time="2017-11-11")
+    taskUser.save()
     for tag in tags:
         saveTagTask(tag=saveTag(tag), task=task)
     return task
@@ -63,3 +65,11 @@ def addUserToChallange(user_id, challange_id):
 
 def getTaskUsersByUserId(user_id):
     return TaskUser.objects.filter(id_user_id=user_id)
+
+
+def get_all_tasks_by_id(user_id):
+    task_users = getTaskUsersByUserId(user_id)
+    tasks = []
+    for task_user in task_users:
+        tasks.append(Task.objects.get(id=task_user.id_task_id))
+    return tasks
