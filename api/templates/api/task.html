@@ -1,25 +1,39 @@
 {% extends "api/base.html" %}
 {% block content %}
-<div class="list-group">
-    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">List group item heading</h5>
-          <small>3 days ago</small>
-        </div>
-        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-        <small>Donec id elit non mi porta.</small>
-    </a>
+    <div class="list-group">
+        {% for task in tasks %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start ele_l">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ task.name }}</h5>
+                  <small>{{ task.endDate }}</small>
+                </div>
+                <p class="mb-1">{{ task.description }}</p>
+                <a class="text-white btn btn-primary btn-block" href="{% url 'api_task' %}">Finish your task</a>
+            </div>
+        {% endfor %}
+    </div>
 
-    {% for task in tasks %}
-        <p>{{ task.name }}</p>
-    {% endfor %}
-    <p>dasdasdasda</p>
+
+    <div class="row">
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-body">
+                <a class="text-white btn btn-primary btn-lg btn-block xd_but" href="{% url 'api_new_task' %}">New task</a>
+        </div>
+    </div>
+</div>
 </div>
 
 
 
-    <div>
-        <button><a href="{% url 'api_new_task' %}">New task</a></button>
-    </div>
+    <style>
+        .xd_but{
+            margin-top: 1.5rem;
+        }
 
+        .ele_l{
+            margin-top: 1rem;
+        }
+
+    </style>
 {% endblock content %}
