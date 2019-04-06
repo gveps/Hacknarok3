@@ -1,10 +1,9 @@
-from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange
 
 
 def easy(request):
@@ -46,10 +45,13 @@ def challenge_create(request):
         # task_name = request.POST.get('task_name')
         # task_description = request.POST.get('task_description')
         # task_deadline = request.POST.get('task_deadline')
-        # print(task_name)
+        chanalnge_name=request.POST.get('challenge_name')
+        chanalnge_description = request.POST.get('challenge_description')
+
+        # createChallange(chanalnge_name,chanalnge_description,)
         print("HIBOB")
 
-    return render(request, 'api/chalnge_create.html')
+    return render(request, 'api/create_chalange/chalnge_create.html')
 
 
 def home(request):
