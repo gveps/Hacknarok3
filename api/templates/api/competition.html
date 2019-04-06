@@ -1,4 +1,45 @@
 {% extends "api/base.html" %}
 {% block content %}
-    <p> Competition </p>
+    <<div class="content-section">
+        <form method="POST">
+            {%  csrf_token %}
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="challenge_name">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="challenge_description"></textarea>
+            </div>
+
+              <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Add Bet
+              </a>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+                 <div class="form-group">
+                    <label for="exampleFormControlTextarea1"></label>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Select price/entry cost</label>
+                        <select class="form-control" id="bet_type">
+                          <option>Money</option>
+                          <option>Thing</option>
+                          <option>To do</option>
+                        </select>
+                      </div>
+                     <div>
+                         <label for="bet_price">Define amount or description</label>
+                     <input type="text" class="form-control" id="bet_price" name="task_price">
+                    </div>
+                 </div>
+              </div>
+            </div>
+
+
+
+
+
+
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
 {% endblock content %}
