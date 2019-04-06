@@ -21,5 +21,7 @@ class TaskUser(models.Model):
     id_task = models.ForeignKey(Task, on_delete=models.CASCADE)
     is_verified = models.BooleanField()
     deadline = models.DateField()
+    photo = models.FileField(upload_to='media/')
+
 
 
