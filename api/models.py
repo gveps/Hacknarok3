@@ -19,6 +19,11 @@ class Tag(models.Model):
     name = models.CharField(max_length=30)
 
 
+class CategoryTag(models.Model):
+    id_tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+
 class TagTask(models.Model):
     id_tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     id_task = models.ForeignKey(Task, on_delete=models.CASCADE)

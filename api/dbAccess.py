@@ -1,4 +1,4 @@
-from api.models import Task, Tag, TagTask, MyUser, Challange, TaskChallange, TaskUser
+from api.models import Task, Tag, TagTask, MyUser, Challange, TaskChallange, TaskUser, CategoryTag
 
 
 # // save task in database return id
@@ -96,3 +96,34 @@ def getChallangeFromUserId(user_id):
             challanges.append(task_chal.id_challange)
     challanges = list(dict.fromkeys(challanges))
     return challanges
+
+
+def addCategoryTag(name, tags):
+    for tagStr in tags:
+        tag = Tag(name=tagStr)
+        tag.save()
+        categoryTag = CategoryTag(id_tag=tag, name=name)
+        categoryTag.save()
+
+def getTagsFromCategory(category_name):
+    tags = CategoryTag.objects.filter(name=category_name)
+    tags_str = []
+    for tag in tags:
+        tags_str.append(tag.id_tag)
+    return tags_str
+
+
+def addTaskWithCategory(name, description, total_times, startDate, endDate, type, status, category_name):
+    task = saveTask(name=name, description=description, total_times=total_times, startDate=startDate, endDate=endDate, type=type, status=status)
+    for tag in getTagsFromCategory(category_name):
+        saveTagTask(tag=tag, task=task)
+    return task
+
+
+def getAllCategories():
+    categoryTag = CategoryTag.objects.all()
+    categories = []
+    for catTag in categoryTag:
+        categories.append(catTag.name)
+    categories = list(dict.fromkeys(categories))
+    return categories
