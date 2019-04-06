@@ -45,3 +45,7 @@ def new_task(request):
         return render(request, 'api/task.html')
     return render(request, 'api/new_task.html')
 
+
+def new(request):
+    return render(request, 'api/new.html')
+

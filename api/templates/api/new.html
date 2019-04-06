@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<video autoplay></video>
+<button>Capture</button>
+<img src="">
+
+<script>
+  const screenshotButton = document.querySelector('button')
+  const img = document.querySelector('img')
+  const video = document.querySelector('video')
+
+  const canvas = document.createElement('canvas')
+
+  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).
+    then(handleSuccess).catch(e => console.log(e))
+
+  screenshotButton.onclick = video.onclick = function () {
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    canvas.getContext('2d').drawImage(video, 0, 0)
+    // Other browsers will fall back to image/png
+    img.src = canvas.toDataURL('image/png')
+      console.log(img.src)
+  }
+
+  function handleSuccess (stream) {
+    screenshotButton.disabled = false
+    video.srcObject = stream
+  }
+</script>
+</body>
+</html>
