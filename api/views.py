@@ -38,8 +38,9 @@ def account(request):
     return render(request, 'api/account.html')
 
 
-def competition(request):
-    return render(request, 'api/competition.html')
+def challenge_create(request):
+
+    return render(request, 'api/chalnge_create.html')
 
 
 def home(request):
