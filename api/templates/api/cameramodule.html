@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<video autoplay></video>
+<button type="submit">Capture</button>
+<img name="image" src="">
+
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+{% csrf_token %}
+
+<script>
+    const screenshotButton = document.querySelector('button')
+    const img = document.querySelector('img')
+    const video = document.querySelector('video')
+
+    const canvas = document.createElement('canvas')
+
+    navigator.mediaDevices.getUserMedia({ audio: false, video: true }).
+    then(handleSuccess).catch(e => console.log(e))
+
+    screenshotButton.onclick = video.onclick = function () {
+        canvas.width = video.videoWidth
+        canvas.height = video.videoHeight
+        canvas.getContext('2d').drawImage(video, 0, 0)
+        // Other browsers will fall back to image/png
+        img.src = canvas.toDataURL('image/png')
+        console.log(img.src.toString())
+        loadDoc(img.src.toString())
+    }
+
+    function handleSuccess (stream) {
+        screenshotButton.disabled = false
+        video.srcObject = stream
+    }
+
+    function loadDoc(data) {
+        console.log(typeof data === 'string')
+        $.ajax({
+            type: "POST",
+            url:'http://127.0.0.1:8000/ar/',
+            data: 'str' + data,
+            success: function(msg){
+                console.log('good');
+            },
+            error: function (msg) {
+                console.log('bad');
+            }
+        });
+    }
+</script>
+</body>
+</html>

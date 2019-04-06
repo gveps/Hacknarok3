@@ -1,6 +1,8 @@
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+
 
 def easy(request):
 
@@ -46,6 +48,18 @@ def new_task(request):
     return render(request, 'api/new_task.html')
 
 
+@csrf_exempt
 def new(request):
-    return render(request, 'api/new.html')
+    print('post przed')
+    if request.method == 'POST':
+        print("post")
+        upload_file = request.POST
+        for elem in upload_file:
+            print(elem)
+        # print(upload_file.size)
+        # fs = FileSystemStorage()
+        # fs.save(upload_file.name, upload_file.size)
+    return render(request, 'api/cameramodule.html')
+
+
 
