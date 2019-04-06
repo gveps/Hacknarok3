@@ -66,7 +66,7 @@ def new_task(request):
 
 
 @csrf_exempt
-def new(request):
+def cameramodule(request):
     print('post przed')
     if request.method == 'POST':
         print("post")
