@@ -24,13 +24,17 @@ def saveTagTask(tag, task):
     tag_task.save()
 
 
-def addTask(user_id, name, description, total_times, startDate, endDate, type, status, tags):
+def addTask(name, description, total_times, startDate, endDate, type, status, tags):
     task = saveTask(name=name, description=description, total_times=total_times, startDate=startDate, endDate=endDate, type=type, status=status)
-    taskUser = TaskUser(id_user_id=user_id, id_task=task, counter=0, last_time="2017-11-11")
-    taskUser.save()
     for tag in tags:
         saveTagTask(tag=saveTag(tag), task=task)
     return task
+
+
+def addUserToTask(task_id, user_id):
+    taskUser = TaskUser(id_user_id=user_id, id_task_id=task_id, counter=0, last_time="2017-11-11")
+    taskUser.save()
+    return taskUser
 
 
 def getTagsByTaskName(taskName):
@@ -73,3 +77,22 @@ def get_all_tasks_by_id(user_id):
     for task_user in task_users:
         tasks.append(Task.objects.get(id=task_user.id_task_id))
     return tasks
+
+
+def getAllTasksFromChallangeId(challange_id):
+    taskChallanges = TaskChallange.objects.filter(id_challange_id=challange_id)
+    tasks = []
+    for taskchal in taskChallanges:
+        tasks.append(taskchal.id_task)
+    return tasks
+
+
+def getChallangeFromUserId(user_id):
+    all_tasks = get_all_tasks_by_id(user_id)
+    challanges = []
+    for task in all_tasks:
+        task_challanges = TaskChallange.objects.filter(id_task=task)
+        for task_chal in task_challanges:
+            challanges.append(task_chal.id_challange)
+    challanges = list(dict.fromkeys(challanges))
+    return challanges
