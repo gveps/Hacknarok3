@@ -17,4 +17,4 @@ def recognize(path):
     return names
 
 #HOW TO USE
-print(recognize("test_chair.jpg"))
+print(recognize("hantel.jpg"))
