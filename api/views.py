@@ -41,6 +41,13 @@ def account(request):
 
 
 def challenge_create(request):
+    if request.method == 'POST':
+        # user_id = 1
+        # task_name = request.POST.get('task_name')
+        # task_description = request.POST.get('task_description')
+        # task_deadline = request.POST.get('task_deadline')
+        # print(task_name)
+        print("HIBOB")
 
     return render(request, 'api/chalnge_create.html')
 
