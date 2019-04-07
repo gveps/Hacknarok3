@@ -2,11 +2,23 @@ import decimal
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+import base64
+
+from django.http import JsonResponse, HttpResponseRedirect
+import base64
+
+from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask, \
     getAllTasksFromChallangeId
+
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, getTagsByTaskId, \
+    validateTaskForUser
+from api.tagVeryfication import tagVerify
+from img_recg.detect import recognize
 
 
 def easy(request):
@@ -40,7 +52,6 @@ def account(request):
     return render(request, 'api/account.html')
 
 
-@csrf_exempt
 def challenge_create(request):
     if request.method == 'POST':
         chanalnge_name = request.POST.get('challenge_name')
@@ -90,26 +101,40 @@ def new_task(request):
         task_name = request.POST.get('task_name')
         task_description = request.POST.get('task_description')
         task_deadline = request.POST.get('task_deadline')
-        # taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
-        # addUserToTask(taskk.id, user_id)
-        # addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
-        # user_id = 1
+        print(task_name)
+        print(task_description)
+        print(task_deadline)
+
+        taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
+        addUserToTask(taskk.id, user_id)
+
+        user_id = 1
         list_task = get_all_tasks_by_id(user_id)
-        return redirect('../task', {'tasks': list_task})
-    else:
-        print('dwa razy')
-        return render(request, 'api/new_task.html')
+        return render(request, 'api/task.html', {'tasks': list_task})
+    return render(request, 'api/new_task.html')
 
 
 @csrf_exempt
 def cameramodule(request):
-    print('post przed')
     if request.method == 'POST':
-        print("post")
-        upload_file = request.POST
-        for elem in upload_file:
-            print(elem)
-        # print(upload_file.size)
-        # fs = FileSystemStorage()
-        # fs.save(upload_file.name, upload_file.size)
+        upload_file=request.body
+        image_64_decode = base64.standard_b64decode(upload_file)
+        image_result = open('test.png', 'wb')
+        image_result.write(image_64_decode)
+        image_result.close()
+
+        actual_tags = recognize('test.png')
+        # TODO: get user_id and task_id from post
+        task_id = 8
+        user_id = 1
+        expected_tags = getTagsByTaskId(task_id)
+
+        print(actual_tags)
+
+        if tagVerify(expected_tags, actual_tags):
+            print("zaliczone")
+            validateTaskForUser(user_id, task_id)
+        else:
+            print("nie zaliczone")
+
     return render(request, 'api/cameramodule.html')

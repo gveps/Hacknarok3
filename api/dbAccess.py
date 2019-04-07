@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from api.models import Task, Tag, TagTask, MyUser, Challange, TaskChallange, TaskUser, CategoryTag
 
 
@@ -42,6 +44,14 @@ def getTagsByTaskName(taskName):
     return TagTask.objects.filter(id_task=task)
 
 
+def getTagsByTaskId(task_id):
+    task = Task.objects.get(id=task_id)
+    tags = TagTask.objects.filter(id_task=task)
+    tagsstr = []
+    for tag in tags:
+        tagsstr.append(tag.id_tag.name)
+    return tagsstr
+
 def addUser(login, password, name, surname):
     user = MyUser(login=login, name=name, password=password, surname=surname, photo="")
     user.save()
@@ -75,7 +85,8 @@ def get_all_tasks_by_id(user_id):
     task_users = getTaskUsersByUserId(user_id)
     tasks = []
     for task_user in task_users:
-        tasks.append(Task.objects.get(id=task_user.id_task_id))
+        if task_user.counter == 0:
+            tasks.append(Task.objects.get(id=task_user.id_task_id))
     return tasks
 
 
@@ -127,3 +138,10 @@ def getAllCategories():
         categories.append(catTag.name)
     categories = list(dict.fromkeys(categories))
     return categories
+
+
+def validateTaskForUser(user_id, task_id):
+    userTask = TaskUser.objects.get(id_user_id=user_id, id_task_id=task_id)
+    userTask.counter = userTask.counter + 1
+    userTask.last_time = timezone.now()
+    userTask.save()

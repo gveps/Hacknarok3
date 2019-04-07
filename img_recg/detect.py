@@ -16,5 +16,5 @@ def recognize(path):
         names.append(label.description)
     return names
 
-#HOW TO USE
-print(recognize("airbike.jpg"))
+# #HOW TO USE
+# print(recognize("hantel.jpg"))
