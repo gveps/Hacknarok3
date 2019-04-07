@@ -5,7 +5,10 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, getTagsByTaskId, \
+    validateTaskForUser
+from api.tagVeryfication import tagVerify
+from img_recg.detect import recognize
 
 
 def easy(request):
@@ -73,12 +76,25 @@ def new_task(request):
 
 @csrf_exempt
 def cameramodule(request):
-    print('post przed')
     if request.method == 'POST':
         upload_file=request.body
         image_64_decode = base64.standard_b64decode(upload_file)
         image_result = open('test.png', 'wb')
         image_result.write(image_64_decode)
         image_result.close()
+
+        actual_tags = recognize('test.png')
+        # TODO: get user_id and task_id from post
+        task_id = 5
+        user_id = 1
+        expected_tags = getTagsByTaskId(task_id)
+
+        print(actual_tags)
+
+        if tagVerify(expected_tags, actual_tags):
+            print("zaliczone")
+            validateTaskForUser(user_id, task_id)
+        else:
+            print("nie zaliczone")
 
     return render(request, 'api/cameramodule.html')
