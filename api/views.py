@@ -1,13 +1,4 @@
-import decimal
-
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-import base64
-import json
-
 from django.http import JsonResponse, HttpResponseRedirect
-import base64
-
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -116,7 +107,7 @@ def challenge_mod(request):
 def new_task(request):
     if request.method == 'POST':
         user_id = 1
-        category = 'dupa'
+
 
         task_name = request.POST.get('task_name')
         task_description = request.POST.get('task_description')

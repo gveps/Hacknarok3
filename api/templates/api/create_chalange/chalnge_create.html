@@ -4,12 +4,12 @@
         <form method="POST">
             {%  csrf_token %}
             <div class="form-group">
-                <label class="text-dark" for="exampleFormControlInput1">Name</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" name="challenge_name" placeholder="exp. Gym Beast" required>
+                <label for="exampleFormControlInput1">Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="challenge_name">
             </div>
             <div class="form-group">
-                <label class="text-dark" for="exampleFormControlTextarea1">Description</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="challenge_description" placeholder="exp. Only the biggest beast will win"></textarea>
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="challenge_description"></textarea>
             </div>
 
               <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -22,14 +22,14 @@
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Select price/entry cost</label>
                         <select class="form-control" id="bet_type">
-                          <option selected="selected" onclick="makeNumber()">Money</option>
-                          <option  onclick="makeText()">Thing</option>
-                          <option onclick="makeWord()">To do</option>
+                          <option onselect="hideButt()">Money</option>
+                          <option>Thing</option>
+                          <option>To do</option>
                         </select>
                       </div>
                      <div>
                          <label for="bet_price">Define amount or description</label>
-                     <input type="number" class="form-control" id="bet_price" name="task_price">
+                     <input type="text" class="form-control" id="bet_price" name="task_price">
                     </div>
                  </div>
               </div>
@@ -43,21 +43,14 @@
             <button type="submit" class="btn btn-primary">Create</button>
 
             <script>
-
-                function makeNumber() {
-                    var x = document.getElementById("bet_price");
-                    x.type="number";
-                    x.value=20;}
-                function makeText() {
-                    var x = document.getElementById("bet_price");
-                    x.type="text";
-                    x.placeholder="Describe the thing";}
-                function makeWord() {
-                    var x = document.getElementById("bet_price");
-                    x.type="text";
-                    x.placeholder="Descripe thing to do";}
-
-
+                function hideButt() {
+                      var x = document.getElementById("bet_price");
+                      if (x.style.display === "none") {
+                        x.style.display = "block";
+                      } else {
+                        x.style.display = "none";
+                      }
+                    }
             </script>
 
 
