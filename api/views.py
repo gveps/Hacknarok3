@@ -1,4 +1,5 @@
 import base64
+import json
 
 from django.http import JsonResponse, HttpResponseRedirect
 import base64
@@ -92,7 +93,11 @@ def new_task(request):
 @csrf_exempt
 def cameramodule(request):
     if request.method == 'POST':
-        upload_file=request.body
+        upload_file=request.body.decode('utf-8')
+        body = json.loads(upload_file)
+        upload_file = body['data']
+        task_id = body['task']
+        print(task_id)
         image_64_decode = base64.standard_b64decode(upload_file)
         image_result = open('test.png', 'wb')
         image_result.write(image_64_decode)
@@ -100,11 +105,11 @@ def cameramodule(request):
 
         actual_tags = recognize('test.png')
         # TODO: get user_id and task_id from post
-        task_id = 8
         user_id = 1
         expected_tags = getTagsByTaskId(task_id)
 
         print(actual_tags)
+        print(expected_tags)
 
         if tagVerify(expected_tags, actual_tags):
             print("zaliczone")

@@ -16,6 +16,8 @@
 {% csrf_token %}
 
 <script>
+
+
     const screenshotButton = document.querySelector('button')
     const img = document.querySelector('img')
     const video = document.querySelector('video')
@@ -42,13 +44,14 @@
     }
 
     function loadDoc(datas) {
-        console.log(typeof datas === 'string')
+        console.log(typeof datas === 'string');
+        task_id = sessionStorage.getItem('task_id');
         $.post({
             type: "POST",
             contentType: 'application/json',
             url:"http://127.0.0.1:8000/cameramodule/",
-            {#data:JSON.stringify({data: `${data}`}),#}
-            data:datas,
+            data:JSON.stringify({data: `${datas}`, task: task_id}),
+            {#data:datas,#}
             success: function(msg){
                 console.log('good');
                 console.log(datas);
