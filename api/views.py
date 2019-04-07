@@ -3,6 +3,7 @@ import decimal
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import base64
+import json
 
 from django.http import JsonResponse, HttpResponseRedirect
 import base64
@@ -14,13 +15,12 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask, \
     getAllTasksFromChallangeId, addTaskToChallange, getChallangById
 
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask, \
+    getAllCategories, addTaskWithCategory
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, getTagsByTaskId, \
     validateTaskForUser
 from api.tagVeryfication import tagVerify
-
-
-# from img_recg.detect import recognize
+from img_recg.detect import recognize
 
 
 def easy(request):
@@ -121,23 +121,29 @@ def new_task(request):
         task_name = request.POST.get('task_name')
         task_description = request.POST.get('task_description')
         task_deadline = request.POST.get('task_deadline')
-        print(task_name)
-        print(task_description)
-        print(task_deadline)
+        category = request.POST.get('cat')
+        print(category)
+        # print(task_name)
+        # print(task_description)
+        # print(task_deadline)
 
-        taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
+        taskk = addTaskWithCategory(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
         addUserToTask(taskk.id, user_id)
 
         user_id = 1
         list_task = get_all_tasks_by_id(user_id)
         return render(request, 'api/task.html', {'tasks': list_task})
-    return render(request, 'api/new_task.html')
+    return render(request, 'api/new_task.html', {'category': getAllCategories})
 
 
 @csrf_exempt
 def cameramodule(request):
     if request.method == 'POST':
-        upload_file = request.body
+        upload_file=request.body.decode('utf-8')
+        body = json.loads(upload_file)
+        upload_file = body['data']
+        task_id = body['task']
+        print(task_id)
         image_64_decode = base64.standard_b64decode(upload_file)
         image_result = open('test.png', 'wb')
         image_result.write(image_64_decode)
@@ -145,11 +151,11 @@ def cameramodule(request):
 
         actual_tags = recognize('test.png')
         # TODO: get user_id and task_id from post
-        task_id = 8
         user_id = 1
         expected_tags = getTagsByTaskId(task_id)
 
         print(actual_tags)
+        print(expected_tags)
 
         if tagVerify(expected_tags, actual_tags):
             print("zaliczone")

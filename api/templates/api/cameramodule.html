@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
+<a class="btn btn-block" style="background-color: #272932 !important; color: #E6E6E6; height: 3.5rem; font-size: 2rem; font-family: 'Comic Sans MS';">#Drinking water</a>
+<body style="background-color: #272932">
 <video autoplay></video>
-<button type="submit">Capture</button>
+<button type="submit" class="btn btn-block" style="background-color: #272932 !important; color: #E6E6E6; height: 10rem; font-size: 4rem; font-family: 'Comic Sans MS';">CAPTURE</button>
 <img name="image" src="">
 
    <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
@@ -16,6 +18,8 @@
 {% csrf_token %}
 
 <script>
+
+
     const screenshotButton = document.querySelector('button')
     const img = document.querySelector('img')
     const video = document.querySelector('video')
@@ -42,17 +46,19 @@
     }
 
     function loadDoc(datas) {
-        console.log(typeof datas === 'string')
+        console.log(typeof datas === 'string');
+        task_id = sessionStorage.getItem('task_id');
         $.post({
             type: "POST",
             contentType: 'application/json',
             url:"http://127.0.0.1:8000/cameramodule/",
-            {#data:JSON.stringify({data: `${data}`}),#}
-            data:datas,
+            data:JSON.stringify({data: `${datas}`, task: task_id}),
+            {#data:datas,#}
             success: function(msg){
                 console.log('good');
                 console.log(datas);
                 console.log(datas.length)
+                window.location = '../task';
             },
             error: function (msg) {
                 console.log('bad');
