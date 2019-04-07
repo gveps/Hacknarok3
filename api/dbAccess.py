@@ -127,6 +127,7 @@ def getTagsFromCategory(category_name):
 def addTaskWithCategory(name, description, total_times, startDate, endDate, type, status, category_name):
     task = saveTask(name=name, description=description, total_times=total_times, startDate=startDate, endDate=endDate, type=type, status=status)
     for tag in getTagsFromCategory(category_name):
+        print(tag)
         saveTagTask(tag=tag, task=task)
     return task
 

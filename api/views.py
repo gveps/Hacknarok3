@@ -9,7 +9,8 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask, \
+    getAllCategories, addTaskWithCategory
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, getTagsByTaskId, \
     validateTaskForUser
 from api.tagVeryfication import tagVerify
@@ -77,17 +78,19 @@ def new_task(request):
         task_name = request.POST.get('task_name')
         task_description = request.POST.get('task_description')
         task_deadline = request.POST.get('task_deadline')
-        print(task_name)
-        print(task_description)
-        print(task_deadline)
+        category = request.POST.get('cat')
+        print(category)
+        # print(task_name)
+        # print(task_description)
+        # print(task_deadline)
 
-        taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
+        taskk = addTaskWithCategory(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
         addUserToTask(taskk.id, user_id)
 
         user_id = 1
         list_task = get_all_tasks_by_id(user_id)
         return render(request, 'api/task.html', {'tasks': list_task})
-    return render(request, 'api/new_task.html')
+    return render(request, 'api/new_task.html', {'category': getAllCategories})
 
 
 @csrf_exempt
