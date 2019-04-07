@@ -32,8 +32,9 @@
         canvas.getContext('2d').drawImage(video, 0, 0)
         // Other browsers will fall back to image/png
         img.src = canvas.toDataURL('image/png')
-        //console.log(img.src.toString())
-        loadDoc(img.src.toString())
+        msge=img.src.replace(/^data:image\/(png|jpg);base64,/, "");
+        {#console.log(img.src.toString())#}
+        loadDoc(msge.toString())
     }
 
     function handleSuccess (stream) {
@@ -41,23 +42,18 @@
         video.srcObject = stream
     }
 
-    function loadDoc(data) {
-        console.log(typeof data === 'string')
-        $.ajax({
+    function loadDoc(datas) {
+        console.log(typeof datas === 'string')
+        $.post({
             type: "POST",
-            url:'http://127.0.0.1:8000/cameramodule/',
-            data: 'str',
+            contentType: 'application/json',
+            url:"http://127.0.0.1:8000/cameramodule/",
+            {#data:JSON.stringify({data: `${data}`}),#}
+            data:datas,
             success: function(msg){
                 console.log('good');
-                console.log(data);
-                console.log(data.length)
-                {#var txtFile = "C:\\Users\\Leslie\\Desktop\\test.txt";#}
-                {#var file = new File(txtFile);#}
-                {##}
-                {#file.open("w"); // open file with write access#}
-                {#file.write(data);#}
-                {#file.close();#}
-
+                console.log(datas);
+                console.log(datas.length)
             },
             error: function (msg) {
                 console.log('bad');
