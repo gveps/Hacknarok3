@@ -12,13 +12,15 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask, \
-    getAllTasksFromChallangeId
+    getAllTasksFromChallangeId, addTaskToChallange
 
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, getTagsByTaskId, \
     validateTaskForUser
 from api.tagVeryfication import tagVerify
-from img_recg.detect import recognize
+
+
+# from img_recg.detect import recognize
 
 
 def easy(request):
@@ -64,18 +66,31 @@ def challenge_create(request):
             price_flo = float(price)
         price_flo = decimal.Decimal(round(price_flo, 2))
         challenge = createChallange(chanalnge_name, chanalnge_description, price_flo, status)
+        print(challenge.name + "========================================")
         tasks = getAllTasksFromChallangeId(challenge.id)
-        return redirect('../challenge_mod', {'challenge': challenge, 'tasks': tasks})
+        return redirect('../challenge_mod?challenge_id=' + str(challenge.id), {'challenge': challenge, 'tasks': tasks})
     return render(request, 'api/create_chalange/chalnge_create.html')
 
 
 def new_task_for_chalange(request):
+    challenge_id = request.GET.get("challenge_id")
+    print(challenge_id)
+    if request.GET.get("challenge_id") is not None:
+        print("Not none")
+        print(challenge_id)
     if request.method == 'POST':
-        challenge = request.GET.get("challenge")
+        print("Odrazu")
+        user_id = 1
+        category = 'dupa'
+        task_name = request.POST.get('task_name')
+        task_description = request.POST.get('task_description')
+        task_deadline = request.POST.get('task_deadline')
+        taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
+        addUserToTask(taskk.id, user_id)
+        addTaskToChallange(taskk.id, challenge_id)
 
-        #  TODO Make adding chalange here
+        return redirect('../challenge_mod?challenge_id=' + challenge_id,{})
 
-        return redirect('../challenge_mod', {'chalange': challenge})
     return render(request, 'api/new_chalenge_task.html')
 
 
@@ -85,11 +100,16 @@ def home(request):
 
 @csrf_exempt
 def challenge_mod(request):
+    if request.GET.get("challenge_id") is not None:
+        request_id = request.GET.get("challenge_id")
+
     if request.method == 'POST':
         challenge = request.POST.get('challenge')
-        task=request.POST.get('taks')
-        return redirect('../task_for_challenge', {'chalange': challenge})
-    return render(request, 'api/challenge_mod.html')
+        return redirect('../task_for_challenge?challenge_id=' + str(request_id), {'challenge': challenge})
+
+    list_task = getAllTasksFromChallangeId(request_id)
+    challenge_name
+    return render(request, 'api/challenge_mod.html',{"tasks":list_task,"name": })
 
 
 @csrf_exempt
@@ -117,7 +137,7 @@ def new_task(request):
 @csrf_exempt
 def cameramodule(request):
     if request.method == 'POST':
-        upload_file=request.body
+        upload_file = request.body
         image_64_decode = base64.standard_b64decode(upload_file)
         image_result = open('test.png', 'wb')
         image_result.write(image_64_decode)

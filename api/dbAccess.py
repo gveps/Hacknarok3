@@ -98,6 +98,15 @@ def getAllTasksFromChallangeId(challange_id):
     return tasks
 
 
+
+def getAllTasksFromChallangeId(challange_id):
+    taskChallanges = TaskChallange.objects.filter(id_challange_id=challange_id)
+    tasks = []
+    for taskchal in taskChallanges:
+        tasks.append(taskchal.id_task)
+    return tasks
+
+
 def getChallangeFromUserId(user_id):
     all_tasks = get_all_tasks_by_id(user_id)
     challanges = []
