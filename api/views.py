@@ -100,7 +100,7 @@ def cameramodule(request):
 
         actual_tags = recognize('test.png')
         # TODO: get user_id and task_id from post
-        task_id = 5
+        task_id = 8
         user_id = 1
         expected_tags = getTagsByTaskId(task_id)
 

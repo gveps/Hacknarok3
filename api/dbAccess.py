@@ -85,7 +85,8 @@ def get_all_tasks_by_id(user_id):
     task_users = getTaskUsersByUserId(user_id)
     tasks = []
     for task_user in task_users:
-        tasks.append(Task.objects.get(id=task_user.id_task_id))
+        if task_user.counter == 0:
+            tasks.append(Task.objects.get(id=task_user.id_task_id))
     return tasks
 
 
