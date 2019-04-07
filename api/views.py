@@ -51,12 +51,18 @@ def challenge_create(request):
 
             price_flo = float(price)
         price_flo = decimal.Decimal(round(price_flo, 2))
-        createChallange(chanalnge_name, chanalnge_description, price_flo, status)
-
+        challenge = createChallange(chanalnge_name, chanalnge_description, price_flo, status)
+        # challenge_id = challenge.id
+        print(challenge.name)
+        return render(request, 'api/challenge_mod.html', {'challenge': challenge})
     return render(request, 'api/create_chalange/chalnge_create.html')
 
 
 def home(request):
+    return render(request, 'api/task.html')
+
+
+def challenge_mod(request):
     return render(request, 'api/task.html')
 
 
