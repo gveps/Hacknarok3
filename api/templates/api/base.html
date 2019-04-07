@@ -10,14 +10,14 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light co">
   <a class="navbar-brand" href="#">Dupna nazwa</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler co_burger" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="{% url 'api_task' %}">Home<span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="{% url 'api_task' %}">Home<span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" href="{% url 'api_task' %}">Task</a>
       <a class="nav-item nav-link" href="{% url 'api_daily' %}">Daily</a>
       <a class="nav-item nav-link" href="{% url 'api_challenge' %}">Competition</a>
@@ -29,4 +29,30 @@
     {% block content %}{% endblock %}
 </div>
 </body>
+<style>
+    body{
+        background-color: #E6E6E6;
+        color: #E6E6E6;
+    }
+    .co{
+        background-color: #828489;
+    }
+
+    .co_burger{
+        background-color: #E6E6E6;
+    }
+
+    .navbar-brand{
+        color: #E6E6E6 !important;
+    }
+
+    .btn{
+        background-color: #272932;
+        color: #E6E6E6;
+    }
+
+    .btn:hover{
+        color: #E6E6E6;
+    }
+</style>
 </html>

@@ -4,12 +4,10 @@ from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
-
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
 
 
 def easy(request):
-
     return render(request, 'api/base.html', {'cos': 'dupa'})
 
 
@@ -28,7 +26,6 @@ def task(request):
     list_task = get_all_tasks_by_id(user_id)
 
     for ele in list_task:
-
         print(ele.name)
     return render(request, 'api/task.html', {'tasks': list_task})
 
@@ -44,22 +41,17 @@ def account(request):
 @csrf_exempt
 def challenge_create(request):
     if request.method == 'POST':
-        # user_id = 1
-        # task_name = request.POST.get('task_name')
-        # task_description = request.POST.get('task_description')
-        # task_deadline = request.POST.get('task_deadline')
-        chanalnge_name=request.POST.get('challenge_name')
+        chanalnge_name = request.POST.get('challenge_name')
         chanalnge_description = request.POST.get('challenge_description')
-        price=request.POST.get("task_price")
-        status=True
-        if price=="":
-            price_flo=0.0
+        price = request.POST.get("task_price")
+        status = True
+        if price == "":
+            price_flo = 0.0
         else:
 
-            price_flo=float(price)
-        price_flo=decimal.Decimal(round(price_flo,2))
-        createChallange(chanalnge_name,chanalnge_description,price_flo,status)
-        print("HIBOB")
+            price_flo = float(price)
+        price_flo = decimal.Decimal(round(price_flo, 2))
+        createChallange(chanalnge_name, chanalnge_description, price_flo, status)
 
     return render(request, 'api/create_chalange/chalnge_create.html')
 
@@ -68,9 +60,11 @@ def home(request):
     return render(request, 'api/task.html')
 
 
+@csrf_exempt
 def new_task(request):
     if request.method == 'POST':
         user_id = 1
+        category = 'dupa'
 
         task_name = request.POST.get('task_name')
         task_description = request.POST.get('task_description')
@@ -79,9 +73,12 @@ def new_task(request):
         print(task_description)
         print(task_deadline)
 
-
+        taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
+        addUserToTask(taskk.id, user_id)
         addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
-        return render(request, 'api/task.html')
+        user_id = 1
+        list_task = get_all_tasks_by_id(user_id)
+        return render(request, 'api/task.html', {'tasks': list_task})
     return render(request, 'api/new_task.html')
 
 

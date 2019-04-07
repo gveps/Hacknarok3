@@ -8,7 +8,7 @@
                   <small>{{ task.endDate }}</small>
                 </div>
                 <p class="mb-1">{{ task.description }}</p>
-                <a class="text-white btn btn-primary btn-block" href="{% url 'api_task' %}">Finish your task</a>
+                <a class="btn btn-block c_b" href="{% url 'cameramodule' %}">Finish your task</a>
             </div>
         {% endfor %}
     </div>
@@ -18,7 +18,7 @@
 <div class="col-md-4">
     <div class="panel panel-default">
         <div class="panel-body">
-                <a class="text-white btn btn-primary btn-lg btn-block xd_but" href="{% url 'api_new_task' %}">New task</a>
+                <a class="text-white btn btn-primary btn-lg btn-block xd_but" href="{% url 'new_task' %}">New task</a>
         </div>
     </div>
 </div>
@@ -27,12 +27,42 @@
 
 
     <style>
+
         .xd_but{
             margin-top: 1.5rem;
+            border: 5px solid #272932;
+            background-color: #4D7EA8;
+            border-radius: 9px !important;
+        }
+
+        .xd_but:hover{
+            border: 5px solid #272932;
+            background-color: #E6E6E6;
+            color: #4D7EA8 !important;
         }
 
         .ele_l{
             margin-top: 1rem;
+            background-color: #4D7EA8;
+            color: #E6E6E6 !important;
+            border-radius: 9px !important;
+            box-shadow:         3px 3px 5px 6px #ccc;
+        }
+
+        .ele_l:hover{
+            background-color: #4D7EA8;
+        }
+
+        .c_b{
+            background-color: #272932;
+            color: #E6E6E6 !important;
+            border-radius: 9px !important;
+
+        }
+
+        .c_b:hover{
+            background-color: rgba(39,41,50,0.8);
+
         }
 
     </style>
