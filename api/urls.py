@@ -13,7 +13,8 @@ urlpatterns = [
     path('competition/', views.competition, name='api_competition'),
     path('daily/', views.daily, name='api_daily'),
     path('', views.home, name='api_home'),
-    path('ar/', views.new)
+    path('cameramodule/', views.cameramodule, name='cameramodule')
+
 
 ]
 
