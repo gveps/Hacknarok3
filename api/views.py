@@ -4,7 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
 
 
 def easy(request):
@@ -63,6 +63,7 @@ def home(request):
 def new_task(request):
     if request.method == 'POST':
         user_id = 1
+        category = 'dupa'
 
         task_name = request.POST.get('task_name')
         task_description = request.POST.get('task_description')
@@ -71,9 +72,12 @@ def new_task(request):
         print(task_description)
         print(task_deadline)
 
+        taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
+        addUserToTask(taskk.id, user_id)
 
-        addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
-        return render(request, 'api/task.html')
+        user_id = 1
+        list_task = get_all_tasks_by_id(user_id)
+        return render(request, 'api/task.html', {'tasks': list_task})
     return render(request, 'api/new_task.html')
 
 

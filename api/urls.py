@@ -6,7 +6,7 @@ from api import views
 
 urlpatterns = [
     path('easy', views.easy),
-    path('task/add_new_task', views.new_task, name='api_new_task'),
+    path('new_task', views.new_task, name='new_task'),
     path('upload/', views.upload),
     path('task/', views.task, name='api_task'),
     path('account/', views.account, name='api_account'),
