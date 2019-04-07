@@ -1,14 +1,29 @@
 {% extends "api/base.html" %}
 {% block content %}
-<<div class="content-section">
-        <form method="POST">
-
-            <div><p>{{ challenge.name}}</p></div>
-
-            <button type="submit" class="btn-block btn ">Add Task</button>
-        </form>
+    <div class="list-group">
+        {% for task in tasks %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start ele_l">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ task.name }}</h5>
+                  <small>{{ task.endDate }}</small>
+                </div>
+                <p class="mb-1">{{ task.description }}</p>
+                <a class="btn btn-block c_b" href="{% url 'cameramodule' %}">Finish your task</a>
+            </div>
+        {% endfor %}
     </div>
 
+<form method="POST">
+    <f class="row">
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-body">
+        <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+    </div>
+</div>
+</form>
+</div>
 
 
 

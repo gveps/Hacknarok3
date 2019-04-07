@@ -1,10 +1,12 @@
 import decimal
 
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask, \
+    getAllTasksFromChallangeId
 
 
 def easy(request):
@@ -45,25 +47,38 @@ def challenge_create(request):
         chanalnge_description = request.POST.get('challenge_description')
         price = request.POST.get("task_price")
         status = True
-        if price == "":
+        if price == "" or price is None:
             price_flo = 0.0
         else:
-
             price_flo = float(price)
         price_flo = decimal.Decimal(round(price_flo, 2))
         challenge = createChallange(chanalnge_name, chanalnge_description, price_flo, status)
-        # challenge_id = challenge.id
-        print(challenge.name)
-        return render(request, 'api/challenge_mod.html', {'challenge': challenge})
+        tasks = getAllTasksFromChallangeId(challenge.id)
+        return redirect('../challenge_mod', {'challenge': challenge, 'tasks': tasks})
     return render(request, 'api/create_chalange/chalnge_create.html')
+
+
+def new_task_for_chalange(request):
+    if request.method == 'POST':
+        challenge = request.GET.get("challenge")
+
+        #  TODO Make adding chalange here
+
+        return redirect('../challenge_mod', {'chalange': challenge})
+    return render(request, 'api/new_chalenge_task.html')
 
 
 def home(request):
     return render(request, 'api/task.html')
 
 
+@csrf_exempt
 def challenge_mod(request):
-    return render(request, 'api/task.html')
+    if request.method == 'POST':
+        challenge = request.POST.get('challenge')
+        task=request.POST.get('taks')
+        return redirect('../task_for_challenge', {'chalange': challenge})
+    return render(request, 'api/challenge_mod.html')
 
 
 @csrf_exempt
@@ -75,17 +90,15 @@ def new_task(request):
         task_name = request.POST.get('task_name')
         task_description = request.POST.get('task_description')
         task_deadline = request.POST.get('task_deadline')
-        print(task_name)
-        print(task_description)
-        print(task_deadline)
-
-        taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
-        addUserToTask(taskk.id, user_id)
-        addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
-        user_id = 1
+        # taskk = addTask(task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, category)
+        # addUserToTask(taskk.id, user_id)
+        # addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
+        # user_id = 1
         list_task = get_all_tasks_by_id(user_id)
-        return render(request, 'api/task.html', {'tasks': list_task})
-    return render(request, 'api/new_task.html')
+        return redirect('../task', {'tasks': list_task})
+    else:
+        print('dwa razy')
+        return render(request, 'api/new_task.html')
 
 
 @csrf_exempt
