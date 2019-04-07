@@ -1,10 +1,10 @@
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 
-from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id
+from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange
 
 
 def easy(request):
@@ -40,8 +40,19 @@ def account(request):
     return render(request, 'api/account.html')
 
 
-def competition(request):
-    return render(request, 'api/competition.html')
+def challenge_create(request):
+    if request.method == 'POST':
+        # user_id = 1
+        # task_name = request.POST.get('task_name')
+        # task_description = request.POST.get('task_description')
+        # task_deadline = request.POST.get('task_deadline')
+        chanalnge_name=request.POST.get('challenge_name')
+        chanalnge_description = request.POST.get('challenge_description')
+
+        # createChallange(chanalnge_name,chanalnge_description,)
+        print("HIBOB")
+
+    return render(request, 'api/create_chalange/chalnge_create.html')
 
 
 def home(request):
@@ -62,7 +73,7 @@ def new_task(request):
 
 
         addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
-        return HttpResponse(request, 'api/task.html')
+        return render(request, 'api/task.html')
     return render(request, 'api/new_task.html')
 
 
@@ -78,6 +89,3 @@ def cameramodule(request):
         # fs = FileSystemStorage()
         # fs.save(upload_file.name, upload_file.size)
     return render(request, 'api/cameramodule.html')
-
-
-

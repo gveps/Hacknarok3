@@ -1,4 +1,4 @@
-from api.models import Task, Tag, TagTask, MyUser, Challange, TaskChallange, TaskUser
+from api.models import Task, Tag, TagTask, MyUser, Challange, TaskChallange, TaskUser, CategoryTag
 
 
 # // save task in database return id
@@ -24,13 +24,17 @@ def saveTagTask(tag, task):
     tag_task.save()
 
 
-def addTask(user_id, name, description, total_times, startDate, endDate, type, status, tags):
+def addTask(name, description, total_times, startDate, endDate, type, status, tags):
     task = saveTask(name=name, description=description, total_times=total_times, startDate=startDate, endDate=endDate, type=type, status=status)
-    taskUser = TaskUser(id_user_id=user_id, id_task=task, counter=0, last_time="2017-11-11")
-    taskUser.save()
     for tag in tags:
         saveTagTask(tag=saveTag(tag), task=task)
     return task
+
+
+def addUserToTask(task_id, user_id):
+    taskUser = TaskUser(id_user_id=user_id, id_task_id=task_id, counter=0, last_time="2017-11-11")
+    taskUser.save()
+    return taskUser
 
 
 def getTagsByTaskName(taskName):
@@ -73,3 +77,53 @@ def get_all_tasks_by_id(user_id):
     for task_user in task_users:
         tasks.append(Task.objects.get(id=task_user.id_task_id))
     return tasks
+
+
+def getAllTasksFromChallangeId(challange_id):
+    taskChallanges = TaskChallange.objects.filter(id_challange_id=challange_id)
+    tasks = []
+    for taskchal in taskChallanges:
+        tasks.append(taskchal.id_task)
+    return tasks
+
+
+def getChallangeFromUserId(user_id):
+    all_tasks = get_all_tasks_by_id(user_id)
+    challanges = []
+    for task in all_tasks:
+        task_challanges = TaskChallange.objects.filter(id_task=task)
+        for task_chal in task_challanges:
+            challanges.append(task_chal.id_challange)
+    challanges = list(dict.fromkeys(challanges))
+    return challanges
+
+
+def addCategoryTag(name, tags):
+    for tagStr in tags:
+        tag = Tag(name=tagStr)
+        tag.save()
+        categoryTag = CategoryTag(id_tag=tag, name=name)
+        categoryTag.save()
+
+def getTagsFromCategory(category_name):
+    tags = CategoryTag.objects.filter(name=category_name)
+    tags_str = []
+    for tag in tags:
+        tags_str.append(tag.id_tag)
+    return tags_str
+
+
+def addTaskWithCategory(name, description, total_times, startDate, endDate, type, status, category_name):
+    task = saveTask(name=name, description=description, total_times=total_times, startDate=startDate, endDate=endDate, type=type, status=status)
+    for tag in getTagsFromCategory(category_name):
+        saveTagTask(tag=tag, task=task)
+    return task
+
+
+def getAllCategories():
+    categoryTag = CategoryTag.objects.all()
+    categories = []
+    for catTag in categoryTag:
+        categories.append(catTag.name)
+    categories = list(dict.fromkeys(categories))
+    return categories
