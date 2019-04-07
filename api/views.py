@@ -1,3 +1,5 @@
+import decimal
+
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -39,6 +41,7 @@ def account(request):
     return render(request, 'api/account.html')
 
 
+@csrf_exempt
 def challenge_create(request):
     if request.method == 'POST':
         # user_id = 1
@@ -47,8 +50,15 @@ def challenge_create(request):
         # task_deadline = request.POST.get('task_deadline')
         chanalnge_name=request.POST.get('challenge_name')
         chanalnge_description = request.POST.get('challenge_description')
+        price=request.POST.get("task_price")
+        status=True
+        if price=="":
+            price_flo=0.0
+        else:
 
-        # createChallange(chanalnge_name,chanalnge_description,)
+            price_flo=float(price)
+        price_flo=decimal.Decimal(round(price_flo,2))
+        createChallange(chanalnge_name,chanalnge_description,price_flo,status)
         print("HIBOB")
 
     return render(request, 'api/create_chalange/chalnge_create.html')
