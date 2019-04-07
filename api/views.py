@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -48,6 +48,7 @@ def home(request):
     return render(request, 'api/task.html')
 
 
+@csrf_exempt
 def new_task(request):
     if request.method == 'POST':
         user_id = 1
@@ -61,7 +62,7 @@ def new_task(request):
 
 
         addTask(user_id, task_name, task_description, 1, '2017-11-11', task_deadline, 1, True, ['Gym', 'Dumbbell'])
-        return render(request, 'api/task.html')
+        return HttpResponse(request, 'api/task.html')
     return render(request, 'api/new_task.html')
 
 
