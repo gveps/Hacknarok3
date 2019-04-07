@@ -1,10 +1,13 @@
 {% extends "api/base.html" %}
 {% block content %}
+    <div>
+    <h2  class="text-dark" >{{ chalange.name}} <span class="badge badge-secondary">Challenge</span></h2>
+    </div>
     <div class="list-group">
         {% for task in tasks %}
             <div class="list-group-item list-group-item-action flex-column align-items-start ele_l">
                 <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">{{ task.name }}</h5>
+                  <h5 class="mb-1">{{ task.name }}  <span class="badge badge-secondary">Task</span></h5>
                   <small>{{ task.endDate }}</small>
                 </div>
                 <p class="mb-1">{{ task.description }}</p>

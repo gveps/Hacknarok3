@@ -4,11 +4,11 @@
         <form method="POST">
             {%  csrf_token %}
             <div class="form-group">
-                <label for="exampleFormControlInput1">Name</label>
+                <label class="text-dark" for="exampleFormControlInput1">Name</label>
                 <input type="text" class="form-control" id="exampleFormControlInput1" name="task_name">
             </div>
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Description</label>
+                <label for="exampleFormControlTextarea1" class="text-dark">Description</label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="task_description"></textarea>
             </div>
             <div class="form-group">
@@ -19,9 +19,9 @@
         </form>
     </div>
 
-    <style>
-    .content-section{
-        color: #272932 !important;
-    }
-    </style>
+{#    <style>#}
+{#    .content-section{#}
+{#        color: #272932 !important;#}
+{#    }#}
+{#    </style>#}
 {% endblock content %}

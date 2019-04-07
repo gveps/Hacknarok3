@@ -12,7 +12,7 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask, \
-    getAllTasksFromChallangeId, addTaskToChallange
+    getAllTasksFromChallangeId, addTaskToChallange, getChallangById
 
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, addUserToTask
 from api.dbAccess import addTask, getTaskUsersByUserId, get_all_tasks_by_id, createChallange, getTagsByTaskId, \
@@ -108,8 +108,8 @@ def challenge_mod(request):
         return redirect('../task_for_challenge?challenge_id=' + str(request_id), {'challenge': challenge})
 
     list_task = getAllTasksFromChallangeId(request_id)
-    challenge_name
-    return render(request, 'api/challenge_mod.html',{"tasks":list_task,"name": })
+    challenge=getChallangById(request_id)
+    return render(request, 'api/challenge_mod.html',{"tasks":list_task,"chalange":challenge})
 
 
 @csrf_exempt

@@ -99,6 +99,10 @@ def getAllTasksFromChallangeId(challange_id):
 
 
 
+def getChallangById(challange_id):
+    chalange= Challange.objects.get(pk=challange_id)
+    return chalange
+
 def getAllTasksFromChallangeId(challange_id):
     taskChallanges = TaskChallange.objects.filter(id_challange_id=challange_id)
     tasks = []

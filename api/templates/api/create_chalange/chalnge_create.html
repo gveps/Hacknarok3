@@ -4,12 +4,12 @@
         <form method="POST">
             {%  csrf_token %}
             <div class="form-group">
-                <label for="exampleFormControlInput1">Name</label>
+                <label class="text-dark" for="exampleFormControlInput1">Name</label>
                 <input type="text" class="form-control" id="exampleFormControlInput1" name="challenge_name" placeholder="exp. Gym Beast">
             </div>
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Description</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="challenge_description" placeholder="Only the biggest beast will win"></textarea>
+                <label class="text-dark" for="exampleFormControlTextarea1">Description</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="challenge_description" placeholder="exp. Only the biggest beast will win"></textarea>
             </div>
 
               <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
