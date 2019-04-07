@@ -4,7 +4,7 @@ from google.oauth2 import service_account
 
 
 def recognize(path):
-    credentials = service_account.Credentials.from_service_account_file('key.json')
+    credentials = service_account.Credentials.from_service_account_file('C:\\Users\\Leslie\\Documents\\hacknarok\\Hacknarok3\\img_recg\\key.json')
     client = vision.ImageAnnotatorClient(credentials=credentials)
     with io.open(path, 'rb') as image_file:
         content = image_file.read()
@@ -16,5 +16,5 @@ def recognize(path):
         names.append(label.description)
     return names
 
-#HOW TO USE
-print(recognize("hantel.jpg"))
+# #HOW TO USE
+# print(recognize("hantel.jpg"))
